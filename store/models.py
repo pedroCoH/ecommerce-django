@@ -28,11 +28,12 @@ class VariationManager(models.Manager):
     
     def tallas(self):
         return super(VariationManager, self).filter(variation_category='talla', is_active=True)
-
+    
+# Agregar las variaciones 
 variation_category_choice= {
     ('color', 'color'),
     ('talla', 'talla'),
-    
+ 
 }
     
 class Variation(models.Model):
