@@ -29,7 +29,7 @@ def register(request):
             user.save()
             
             current_site = get_current_site(request)
-            email_subject = 'Por favor activa tu cuenta'
+            email_subject = 'Por favor activa tu cuenta en Pecados Sabrosos'
             body = render_to_string('accounts/account_verification_email.html', {
                 'user': user,
                 'domain': current_site,
@@ -110,12 +110,12 @@ def dashboard(request):
 
 def forgotPassword(request):
     if request.method == 'POST':
-        email = request.POST.get['email']
+        email = request.POST.get('email')
         if Account.objects.filter(email=email).exists():
             user = Account.objects.get(email__exact=email)
             
             current_site = get_current_site(request)
-            mail_subject = 'Resetear Password'
+            email_subject = 'Resetear Password'
             body = render_to_string('accounts/reset_password_email.html', {
                 'user': user,
                 'domain': current_site,
@@ -123,10 +123,10 @@ def forgotPassword(request):
                 'token': default_token_generator.make_token(user),
             })
             to_email = email
-            send_email = EmailMessage(mail_subject, body, to=[to_email])
+            send_email = EmailMessage(email_subject, body, to=[to_email])
             send_email.send()
             
-            messages.success(request, 'Un email fue enviado a tu bandeja de entrada')
+            messages.success(request, 'Un email fue enviado a tu bandeja de entrada para resetear tu contraseña')
             return redirect('login')
         else:
             messages.error(request, 'La cuenta de usuario no existe')
@@ -142,7 +142,7 @@ def resetpassword_validate(request, uidb64, token):
     
     if user is not None and default_token_generator.check_token(user, token):
         request.session['uid'] = uid
-        messages.success(request, 'Por favor, restaura tu contraseña')
+        messages.success(request, 'Por favor, resetea tu contraseña')
         return redirect('resetPassword')
     else:
         messages.error(request, 'El link ha expirado')
@@ -158,7 +158,7 @@ def resetPassword(request):
             user = Account.objects.get(pk=uid)
             user.set_password(password) 
             user.save()  
-            messages.success(request, 'La contraseña se restablecio correctamente')
+            messages.success(request, 'La contraseña se reseteo correctamente')
             return redirect('login')
         else:
             messages.error(request, 'La contraseña de confirmación no concuerda')

@@ -1,12 +1,11 @@
-<DOCTYPE html>
 {% autoescape off %}
 
 Hola {{ user.first_name }},
 
-Por favor activat tu cuenta dandole click al siguiente link:
+Por favor activa tu cuenta dandole click al siguiente link:
 
-http://{{domain}}{%url 'activate' uidb64=uid token=token %}
+http://{{domain}}{% url 'activate' uidb64=uid token=token %}
 
-Saludos!
+Saludos de Postres Pecados Sabrosos!
 
 {% endautoescape %}
